@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('telp');
+            $table->string('image');
             $table->string('order_id');
             $table->integer('plan_id');
             $table->date('date_sub');

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('judul_movie');
             $table->string('gambar');
+            $table->string('desk');
             $table->date('tanggal_upload');
             $table->date('tanggal_rilis');
             $table->integer('jenis_id');

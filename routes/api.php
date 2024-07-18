@@ -25,6 +25,7 @@ Route::middleware('auth:api')->group(function(){
     //midtrans
     Route::post('/subcribe/{id}',[SubscriptionController::class, 'subscribe']);
     //untuk jenis
+    Route::get('/jenis/{id}',[JenisController::class, 'show']);
     Route::put('/jenis/update/{id}',[JenisController::class, 'update']);
     Route::delete('/jenis/delete/{id}',[JenisController::class, 'delete']);
     //untuk movies
@@ -43,6 +44,7 @@ Route::get('/movies', [MovieController::class, 'index']);
 Route::get('/movies/show/{id}', [MovieController::class, 'show']);
 Route::get('/movie/genre/{id}', [MovieController::class, 'genre']);
 Route::get('/sub',[SubController::class, 'index']);
+Route::get('/search/{key}', [MovieController::class, 'search']);
 Route::post('/midtrans/notification',[SubscriptionController::class, 'handleNotification']);
 
 

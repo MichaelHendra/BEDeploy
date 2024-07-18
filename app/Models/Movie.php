@@ -21,7 +21,7 @@ class Movie extends Model
     }
 
     protected $fillable = [
-        'judul_movie', 'gambar', 'tanggal_upload', 'tanggal_rilis', 'jenis_id', 'movie_link', 'duration'
+        'judul_movie', 'gambar','desk', 'tanggal_upload', 'tanggal_rilis', 'jenis_id', 'movie_link', 'duration'
     ];
     protected $appends = ['image_url', 'video_url'];
     public function getImageUrlAttribute()

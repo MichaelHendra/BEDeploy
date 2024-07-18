@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\Validator;
 
 class MovieController extends Controller
 {
-    
+
     public function index() {
-        $data = Movie::all();
+        $data = Movie::join('jenis_movie', 'jenis_movie.jenis_id', '=', 'movies.jenis_id')->get();
         return response()->json($data);
     }
-    
-    
-    
+
+
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -26,39 +26,40 @@ class MovieController extends Controller
             'jenis_id' => 'required',
             'movie_link' => 'required|mimes:mp4,mov,ogg,qt',
         ]);
-    
+
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-        
+
         if ($request->hasFile('gambar')) {
             $image = $request->file('gambar');
             $imageName = time() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('images'), $imageName);
             $imagePath = 'images/' . $imageName;
         }
-    
+
         if ($request->hasFile('movie_link')) {
             $video = $request->file('movie_link');
             $videoName = time() . '.' . $video->getClientOriginalExtension();
             $video->move(public_path('videos'), $videoName);
             $videoPath = 'videos/' . $videoName;
         }
-        
+
        $data = Movie::create([
            'judul_movie' => $request->judul_movie,
-            'gambar' => $imagePath, 
-            'tanggal_upload' => now(), 
+            'gambar' => $imagePath,
+            'desk'=> $request->desk,
+            'tanggal_upload' => now(),
             'tanggal_rilis' => $request->tanggal_rilis,
             'jenis_id' => $request->jenis_id,
-            'movie_link' => $videoPath, 
+            'movie_link' => $videoPath,
             'duration' => 0,
         ]);
-    
+
         return new ApihResource(true,"Data Berhasi Ditambah", $data);
     }
 
-    
+
     public function show($id)
     {
         // // try {
@@ -75,7 +76,7 @@ class MovieController extends Controller
         // }
     }
 
-    
+
     public function update(Request $request, $id)
 {
     $validator = Validator::make($request->all(), [
@@ -90,11 +91,11 @@ class MovieController extends Controller
     }
 
     $movie = Movie::findOrFail($id);
-    
+
     $oldGambar = $movie->gambar;
     $oldVideo = $movie->movie_link;
 
-   
+
     if ($request->hasFile('gambar')) {
         if($oldGambar){
             $gambarPath = public_path('images/').$oldGambar;
@@ -129,7 +130,7 @@ class MovieController extends Controller
     return response()->json(['success' => 'Movie updated successfully']);
 }
 
-    
+
 public function destroy($id)
 {
     try {
@@ -162,16 +163,22 @@ public function destroy($id)
 }
 
 public function genre($id)  {
-        $data = Movie::join('jenis_movie', 'movies.jenis_id','jenis_movie.jenis_id')
-        ->select('movies.*','jenis_movie.jenis as jenis')
-        ->where('movies.jenis_id',$id)->get();
-        return response()->json($data);
+    $data = Movie::join('jenis_movie', 'movies.jenis_id','jenis_movie.jenis_id')
+    ->select('movies.*','jenis_movie.jenis as jenis')
+    ->where('movies.jenis_id',$id)->get();
+    return response()->json($data);
 }
 
 public function barat() {
-        $data = Movie::where('jenis_id', 1)->get();
+    $data = Movie::where('jenis_id', 1)->get();
 
-        return response()->json($data);
+    return response()->json($data);
 
-    }
+}
+
+public function search($key) {
+    $data = Movie::where('name', 'LIKE', '%'.$key.'%' )->get();
+
+    return reponse()->json($data);
+}
 }

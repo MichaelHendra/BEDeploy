@@ -25,6 +25,7 @@ class RegisterController extends Controller
             'email' => $request->email,
             'password' => $request->password,
             'telp' => $request->telp,
+            'image' => 0,
             'order_id' => 0,
             'plan_id' => 1,
             'date_sub' => '1999-01-01',

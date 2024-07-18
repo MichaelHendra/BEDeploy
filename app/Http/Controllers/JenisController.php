@@ -29,6 +29,12 @@ class JenisController extends Controller
         return response()->json($data);
     }
 
+    public function show($id)  {
+        $data = Jenis_Movie::where('jenis_id',$id)->get();
+
+        return response()->json($data);
+    }
+
     public function update(Request $request, $id)  {
         $validator = Validator::make($request->all(),[
             'jenis' => 'required'

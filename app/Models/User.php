@@ -34,6 +34,7 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',
         'telp',
+        'image',
         'order_id',
         'plan_id',
         'date_sub',
@@ -68,7 +69,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function getJWTIdentifier()
     {
-        return $this->getKey();   
+        return $this->getKey();
     }
 
     public function getJWTCustomClaims()
